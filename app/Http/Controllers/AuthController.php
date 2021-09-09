@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Calendar;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +15,23 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        return User::create([
+        $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password'))
         ]);
+
+        $calendar = Calendar::create([
+            'user_id' => $user->id,
+            'color' => '0',
+            'name' => 'Main',
+            'description' => 'This is your default calendar'
+        ]);
+
+        $user->main_calendar = $calendar->id;
+        $user->save();
+
+        return $user;
     }
 
     public function login(Request $request)

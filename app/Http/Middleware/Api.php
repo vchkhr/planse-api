@@ -12,6 +12,7 @@ class API
 
         $response = $next($request);
         $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Content-Range, Content-Disposition, Content-Description, X-Auth-Token');
+        $response->header('Access-Control-Allow-Credentials', 'true');
         $response->header('Access-Control-Allow-Origin', 'https://planse.vchkhr.com');
         return $response;
     }

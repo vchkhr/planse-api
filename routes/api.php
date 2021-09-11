@@ -31,5 +31,6 @@ Route::middleware(['cors'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::get('/calendar/{calendar}', [CalendarController::class, 'show']);
+        Route::post('/calendar/create', [CalendarController::class, 'store']);
     });
 });

@@ -8,6 +8,7 @@ use App\Models\Calendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,6 +16,16 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => ['unique:users,email'],
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'message' => 'Email already registered.'
+            ], Response::HTTP_CONFLICT);
+        }
+        
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),

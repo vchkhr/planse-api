@@ -38,6 +38,16 @@ class CalendarController extends Controller
         return $calendar;
     }
 
+    public function index(Calendar $calendar)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendars = $user->calendars()->get();
+
+        return $calendars;
+    }
+
     public function edit(Calendar $calendar)
     {
         //

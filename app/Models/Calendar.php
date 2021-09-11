@@ -9,4 +9,9 @@ class Calendar extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id', 'color', 'name', 'description'];
+
+    public function users()
+    {
+        return $this->hasOne(User::class);
+    }
 }

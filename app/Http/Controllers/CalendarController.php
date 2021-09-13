@@ -93,7 +93,7 @@ class CalendarController extends Controller
         return response($calendar);
     }
 
-    public function updateDefault(Calendar $calendar)
+    public function updateMain(Calendar $calendar)
     {
         $data = request()->validate([
             'id' => ['required', 'integer'],

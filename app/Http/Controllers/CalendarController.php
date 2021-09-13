@@ -69,7 +69,7 @@ class CalendarController extends Controller
     {
         $data = request()->validate([
             'color' => ['nullable'],
-            'name' => ['required', 'max:100'],
+            'name' => ['nullable', 'max:100'],
             'description' => ['nullable', 'max:200'],
         ]);
 
@@ -85,9 +85,9 @@ class CalendarController extends Controller
         }
 
         $calendar->update([
-            'color' => $data['color'] ?? 0,
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
+            'color' => $data['color'] ?? $calendar['color'],
+            'name' => $data['name'] ?? $calendar['name'],
+            'description' => $data['description'] ?? $calendar['description'],
         ]);
 
         return response($calendar);

@@ -93,6 +93,22 @@ class CalendarController extends Controller
         return response($calendar);
     }
 
+    public function updateDefault(Calendar $calendar)
+    {
+        $data = request()->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $user->main_calendar = $data['id'];
+
+        $user->save();
+
+        return response($user);
+    }
+
     public function destroy(Calendar $calendar)
     {
         //

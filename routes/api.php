@@ -34,4 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('calendar/create', [CalendarController::class, 'store']);
     Route::get('calendar/{id}', [CalendarController::class, 'show']);
     Route::post('calendar/update/{id}', [CalendarController::class, 'update']);
+    Route::post('calendar/updateDefault', [CalendarController::class, 'updateDefault']);
 });

@@ -31,7 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     
     Route::get('calendar/index', [CalendarController::class, 'index']);
+
     Route::post('calendar/create', [CalendarController::class, 'store']);
+
     Route::get('calendar/{id}', [CalendarController::class, 'show']);
+
     Route::post('calendar/update/{id}', [CalendarController::class, 'update']);
+    Route::post('calendar/updateMain/{id}', [CalendarController::class, 'updateMain']);
+
+    Route::post('calendar/delete/{id}', [CalendarController::class, 'destroy']);
 });

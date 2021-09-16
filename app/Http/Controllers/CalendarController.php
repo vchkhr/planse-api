@@ -69,7 +69,7 @@ class CalendarController extends Controller
     {
         $data = request()->validate([
             'color' => ['nullable'],
-            'name' => ['required', 'max:100'],
+            'name' => ['nullable', 'max:100'],
             'description' => ['nullable', 'max:200'],
         ]);
 
@@ -85,16 +85,56 @@ class CalendarController extends Controller
         }
 
         $calendar->update([
-            'color' => $data['color'] ?? 0,
-            'name' => $data['name'],
-            'description' => $data['description'] ?? null,
+            'color' => $data['color'] ?? $calendar['color'],
+            'name' => $data['name'] ?? $calendar['name'],
+            'description' => $data['description'] ?? $calendar['description'],
         ]);
 
         return response($calendar);
     }
 
-    public function destroy(Calendar $calendar)
+    public function updateMain(Request $request, Calendar $calendar)
     {
-        //
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendar = $user->calendars()->find($request->id);
+
+        if ($calendar == null) {
+            return response([
+                'message' => 'You can\'t make this calendar as main.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user->main_calendar = $calendar->id;
+
+        $user->save();
+
+        return response($user);
+    }
+
+    public function destroy(Request $request, Calendar $calendar)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendar = $user->calendars()->find($request->id);
+
+        if ($calendar == null) {
+            return response([
+                'message' => 'You can\'t delete this calendar.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($calendar->id == $user->main_calendar) {
+            return response([
+                'message' => 'You can\'t delete your main calendar.'
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $calendar->delete();
+
+        return response([], Response::HTTP_OK);
     }
 }
+ 

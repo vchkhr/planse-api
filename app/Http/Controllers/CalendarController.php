@@ -93,24 +93,48 @@ class CalendarController extends Controller
         return response($calendar);
     }
 
-    public function updateMain(Calendar $calendar)
+    public function updateMain(Request $request, Calendar $calendar)
     {
-        $data = request()->validate([
-            'id' => ['required', 'integer'],
-        ]);
-
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $user->main_calendar = $data['id'];
+        $calendar = $user->calendars()->find($request->id);
+
+        if ($calendar == null) {
+            return response([
+                'message' => 'You can\'t make this calendar as main.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user->main_calendar = $calendar->id;
 
         $user->save();
 
         return response($user);
     }
 
-    public function destroy(Calendar $calendar)
+    public function destroy(Request $request, Calendar $calendar)
     {
-        //
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendar = $user->calendars()->find($request->id);
+
+        if ($calendar == null) {
+            return response([
+                'message' => 'You can\'t delete this calendar.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($calendar->id == $user->main_calendar) {
+            return response([
+                'message' => 'You can\'t delete your main calendar.'
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $calendar->delete();
+
+        return response([], Response::HTTP_OK);
     }
 }
+ 

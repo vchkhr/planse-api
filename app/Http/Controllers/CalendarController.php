@@ -137,4 +137,3 @@ class CalendarController extends Controller
         return response([], Response::HTTP_OK);
     }
 }
- 

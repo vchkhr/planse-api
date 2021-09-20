@@ -16,7 +16,7 @@ class CreateCalendarsTable extends Migration
             $table->char('name', 100);
             $table->char('description', 200)->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::table('users', function (Blueprint $table) {

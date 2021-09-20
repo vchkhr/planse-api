@@ -17,6 +17,7 @@ class CreateArrangementsTable extends Migration
             
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->boolean('all_day')->default(false);
 
             $table->unsignedTinyInteger('color')->nullable();
             $table->char('name', 100);

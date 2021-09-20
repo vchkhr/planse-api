@@ -14,7 +14,7 @@ class ArrangementController extends Controller
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $calendar = $user->calendars($request->calendar_id)->first();
+        $calendar = $user->calendars->find($request->id);
 
         if ($calendar == null) {
             return response([
@@ -43,6 +43,7 @@ class ArrangementController extends Controller
             'calendar_id' => ['required', 'integer'],
             'start' => ['required', 'date_format:Y-m-d H:i:s'],
             'end' => ['required', 'date_format:Y-m-d H:i:s'],
+            'all_day' => ['boolean', 'nullable'],
             'color' => ['nullable'],
             'name' => ['required', 'max:100'],
             'description' => ['nullable', 'max:200'],
@@ -63,6 +64,7 @@ class ArrangementController extends Controller
             'user_id' => $user->id,
             'start' => $data['start'],
             'end' => $data['end'],
+            'all_day' => $data['all_day'] ?? false,
             'color' => $data['color'] ?? null,
             'name' => $data['name'],
             'description' => $data['description'] ?? null,

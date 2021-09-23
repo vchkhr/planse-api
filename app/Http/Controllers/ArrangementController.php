@@ -27,6 +27,12 @@ class ArrangementController extends Controller
         return $arrangements;
     }
 
+    public function date_compare($element1, $element2) {
+        $datetime1 = strtotime($element1['end']);
+        $datetime2 = strtotime($element2['end']);
+        return $datetime1 - $datetime2;
+    } 
+
     public function indexUser()
     {
         /** @var \App\Models\User */
@@ -41,6 +47,8 @@ class ArrangementController extends Controller
                 array_push($arrangements, $arrangement);
             }
         }
+
+        usort($arrangements, array($this, 'date_compare'));
 
         return $arrangements;
     }

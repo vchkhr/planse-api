@@ -27,6 +27,24 @@ class ArrangementController extends Controller
         return $arrangements;
     }
 
+    public function indexUser()
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendars = $user->calendars;
+
+        $arrangements = Array();
+
+        foreach ($calendars as $calendar) {
+            foreach ($calendar->arrangements as $arrangement) {
+                array_push($arrangements, $arrangement);
+            }
+        }
+
+        return $arrangements;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

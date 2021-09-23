@@ -33,6 +33,10 @@ class ArrangementController extends Controller
         return $datetime1 - $datetime2;
     } 
 
+    public function all_day($element1, $element2) {
+        return $element2['all_day'] - $element1['all_day'];
+    } 
+
     public function indexUser()
     {
         /** @var \App\Models\User */
@@ -49,6 +53,7 @@ class ArrangementController extends Controller
         }
 
         usort($arrangements, array($this, 'date_compare'));
+        usort($arrangements, array($this, 'all_day'));
 
         return $arrangements;
     }

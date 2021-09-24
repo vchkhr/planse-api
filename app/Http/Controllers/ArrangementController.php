@@ -27,6 +27,37 @@ class ArrangementController extends Controller
         return $arrangements;
     }
 
+    public function date_compare($element1, $element2) {
+        $datetime1 = strtotime($element1['end']);
+        $datetime2 = strtotime($element2['end']);
+        return $datetime1 - $datetime2;
+    } 
+
+    public function all_day($element1, $element2) {
+        return $element2['all_day'] - $element1['all_day'];
+    } 
+
+    public function indexUser()
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendars = $user->calendars;
+
+        $arrangements = Array();
+
+        foreach ($calendars as $calendar) {
+            foreach ($calendar->arrangements as $arrangement) {
+                array_push($arrangements, $arrangement);
+            }
+        }
+
+        usort($arrangements, array($this, 'date_compare'));
+        usort($arrangements, array($this, 'all_day'));
+
+        return $arrangements;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

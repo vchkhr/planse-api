@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Arrangement
 
     Route::get('calendar/{id}/arrangements', [ArrangementController::class, 'index']);
+    Route::get('user/arrangements', [ArrangementController::class, 'indexUser']);
 
     Route::post('arrangement/create', [ArrangementController::class, 'store']);
 });

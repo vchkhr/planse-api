@@ -91,6 +91,12 @@ class ArrangementController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        if (strtotime($data['start']) > strtotime($data['end'])) {
+            return response([
+                'message' => 'End date should be after start date.'
+            ], Response::HTTP_I_AM_A_TEAPOT);
+        }
+
         $arrangement = $calendar->arrangements()->create([
             'user_id' => $user->id,
             'start' => $data['start'],

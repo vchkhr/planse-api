@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Calendar extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'color', 'name', 'description'];
+    protected $fillable = ['user_id', 'color', 'name', 'description', 'visible'];
 
     public function users()
     {

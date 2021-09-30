@@ -71,6 +71,7 @@ class CalendarController extends Controller
             'color' => ['nullable'],
             'name' => ['nullable', 'max:100'],
             'description' => ['nullable', 'max:200'],
+            'visible' => ['nullable', 'integer'],
         ]);
 
         /** @var \App\Models\User */
@@ -88,6 +89,7 @@ class CalendarController extends Controller
             'color' => $data['color'] ?? $calendar['color'],
             'name' => $data['name'] ?? $calendar['name'],
             'description' => $data['description'] ?? $calendar['description'],
+            'visible' => $data['visible'] ?? $calendar['visible'],
         ]);
 
         return response($calendar);

@@ -116,9 +116,20 @@ class ArrangementController extends Controller
      * @param  \App\Models\Arrangement  $arrangement
      * @return \Illuminate\Http\Response
      */
-    public function show(Arrangement $arrangement)
+    public function show(Request $request, Arrangement $arrangement)
     {
-        //
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $arrangement = $user->arrangements()->find($request->id);
+
+        if ($arrangement == null) {
+            return response([
+                'message' => 'You can\'t see this arrangement.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return $arrangement;
     }
 
     /**

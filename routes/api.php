@@ -46,10 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('calendar/delete/{id}', [CalendarController::class, 'destroy']);
 
-    // Arrangement
+    // Events
 
     Route::get('calendar/{id}/arrangements', [ArrangementController::class, 'index']);
     Route::get('user/arrangements', [ArrangementController::class, 'indexUser']);
 
+    // Arrangements
+
     Route::post('arrangement/create', [ArrangementController::class, 'store']);
+    
+    Route::get('arrangement/{id}', [ArrangementController::class, 'show']);
 });

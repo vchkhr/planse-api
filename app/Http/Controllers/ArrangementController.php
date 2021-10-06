@@ -74,8 +74,8 @@ class ArrangementController extends Controller
             'calendar_id' => ['required', 'integer'],
             'start' => ['required', 'date_format:Y-m-d H:i:s'],
             'end' => ['required', 'date_format:Y-m-d H:i:s'],
-            'all_day' => ['boolean', 'nullable'],
-            'color' => ['nullable'],
+            'all_day' => ['nullable', 'boolean'],
+            'color' => ['nullable', 'integer'],
             'name' => ['required', 'max:100'],
             'description' => ['nullable', 'max:200'],
         ]);
@@ -102,7 +102,7 @@ class ArrangementController extends Controller
             'start' => $data['start'],
             'end' => $data['end'],
             'all_day' => $data['all_day'] ?? false,
-            'color' => $data['color'] ?? null,
+            'color' => $data['color'] ?? 0,
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
         ]);
@@ -143,8 +143,8 @@ class ArrangementController extends Controller
             'calendar_id' => ['nullable', 'integer'],
             'start' => ['nullable', 'date_format:Y-m-d H:i:s'],
             'end' => ['nullable', 'date_format:Y-m-d H:i:s'],
-            'all_day' => ['boolean', 'nullable'],
-            'color' => ['nullable'],
+            'all_day' => ['nullable', 'boolean'],
+            'color' => ['nullable', 'integer'],
             'name' => ['nullable', 'max:100'],
             'description' => ['nullable', 'max:200'],
         ]);

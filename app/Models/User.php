@@ -32,6 +32,11 @@ class User extends Authenticatable
         return $this->hasMany(Calendar::class);
     }
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function arrangements()
     {
         return $this->hasMany(Arrangement::class);

@@ -74,8 +74,8 @@ class ArrangementController extends Controller
             'calendar_id' => ['required', 'integer'],
             'start' => ['required', 'date_format:Y-m-d H:i:s'],
             'end' => ['required', 'date_format:Y-m-d H:i:s'],
-            'all_day' => ['boolean', 'nullable'],
-            'color' => ['nullable'],
+            'all_day' => ['nullable', 'boolean'],
+            'color' => ['nullable', 'integer'],
             'name' => ['required', 'max:100'],
             'description' => ['nullable', 'max:200'],
         ]);
@@ -102,7 +102,7 @@ class ArrangementController extends Controller
             'start' => $data['start'],
             'end' => $data['end'],
             'all_day' => $data['all_day'] ?? false,
-            'color' => $data['color'] ?? null,
+            'color' => $data['color'] ?? 0,
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
         ]);
@@ -110,12 +110,6 @@ class ArrangementController extends Controller
         return response($arrangement);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Arrangement  $arrangement
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request, Arrangement $arrangement)
     {
         /** @var \App\Models\User */
@@ -143,26 +137,57 @@ class ArrangementController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Arrangement  $arrangement
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Arrangement $arrangement)
     {
-        //
+        $data = request()->validate([
+            'calendar_id' => ['nullable', 'integer'],
+            'start' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'end' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'all_day' => ['nullable', 'boolean'],
+            'color' => ['nullable', 'integer'],
+            'name' => ['nullable', 'max:100'],
+            'description' => ['nullable', 'max:200'],
+        ]);
+
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $arrangement = $user->arrangements()->find($request->id);
+
+        if ($arrangement == null) {
+            return response([
+                'message' => 'You can\'t edit this arrangement.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $arrangement->update([
+            'calendar_id' => $data['calendar_id'] ?? $arrangement['calendar_id'],
+            'start' => $data['start'] ?? $arrangement['start'],
+            'end' => $data['end'] ?? $arrangement['end'],
+            'all_day' => $data['all_day'] ?? $arrangement['all_day'],
+            'color' => $data['color'] ?? $arrangement['color'],
+            'name' => $data['name'] ?? $arrangement['name'],
+            'description' => $data['description'] ?? $arrangement['description'],
+        ]);
+
+        return response($arrangement);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Arrangement  $arrangement
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Arrangement $arrangement)
+    public function destroy(Request $request, Arrangement $arrangement)
     {
-        //
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $arrangement = $user->arrangements()->find($request->id);
+
+        if ($arrangement == null) {
+            return response([
+                'message' => 'You can\'t delete this arrangement.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $arrangement->delete();
+
+        return response([], Response::HTTP_OK);
     }
 }

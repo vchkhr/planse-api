@@ -15,6 +15,11 @@ class Calendar extends Model
         return $this->hasOne(User::class);
     }
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function arrangements()
     {
         return $this->hasMany(Arrangement::class);

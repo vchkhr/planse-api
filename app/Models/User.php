@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Arrangement::class);
     }
+
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
 }

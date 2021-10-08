@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\ArrangementController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ArrangementController;
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\TestController;
 
 use Illuminate\Http\Request;
@@ -57,6 +58,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('arrangement/{id}', [ArrangementController::class, 'show']);
     Route::post('arrangement/edit/{id}', [ArrangementController::class, 'update']);
     Route::post('arrangement/delete/{id}', [ArrangementController::class, 'destroy']);
-
     Route::get('arrangements', [ArrangementController::class, 'index']);
+
+    // Reminders
+
+    Route::post('reminder/create', [ReminderController::class, 'store']);
+    Route::get('reminder/{id}', [ReminderController::class, 'show']);
+    Route::post('reminder/edit/{id}', [ReminderController::class, 'update']);
+    Route::post('reminder/delete/{id}', [ReminderController::class, 'destroy']);
+    Route::get('reminders', [ReminderController::class, 'index']);
 });

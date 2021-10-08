@@ -10,13 +10,23 @@ class EventController extends Controller
 {
     public function index()
     {
-        $arrangements = app(ArrangementController::class)->index();
+        $events = array();
 
-        foreach ($arrangements as $arrangement) {
-            $arrangement->type = 'arrangement';
+        $arrangements = app(ArrangementController::class)->index();
+        if ($arrangements != null) {
+            foreach ($arrangements as $arrangement) {
+                $arrangement->type = 'arrangement';
+                array_push($events, $arrangement);
+            }
         }
 
-        $events = $arrangements;
+        $reminders = app(ReminderController::class)->index();
+        if ($reminders != null) {
+            foreach ($reminders as $reminder) {
+                $reminder->type = 'reminder';
+                array_push($events, $reminder);
+            }
+        }
 
         return $events;
     }

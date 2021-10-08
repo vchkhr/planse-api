@@ -14,7 +14,7 @@ class ArrangementController extends Controller
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $arrangements = Array();
+        $arrangements = array();
 
         $calendars = $user->calendars;
 
@@ -28,11 +28,6 @@ class ArrangementController extends Controller
         usort($arrangements, array($this, 'all_day'));
 
         return $arrangements;
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -93,11 +88,6 @@ class ArrangementController extends Controller
         return $arrangement;
     }
 
-    public function edit(Arrangement $arrangement)
-    {
-        //
-    }
-
     public function update(Request $request, Arrangement $arrangement)
     {
         $data = request()->validate([
@@ -152,13 +142,15 @@ class ArrangementController extends Controller
         return response([], Response::HTTP_OK);
     }
 
-    public function date_compare($element1, $element2) {
+    public function date_compare($element1, $element2)
+    {
         $datetime1 = strtotime($element1['end']);
         $datetime2 = strtotime($element2['end']);
         return $datetime1 - $datetime2;
-    } 
+    }
 
-    public function all_day($element1, $element2) {
+    public function all_day($element1, $element2)
+    {
         return $element2['all_day'] - $element1['all_day'];
     }
 }

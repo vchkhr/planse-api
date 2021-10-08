@@ -31,9 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // User
 
     Route::get('user', [AuthController::class, 'user'])->name('user');
-    
+
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     // Calendar
 
     Route::get('calendar/index', [CalendarController::class, 'index']);
@@ -43,12 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('calendar/{id}', [CalendarController::class, 'show']);
 
     Route::post('calendar/edit/{id}', [CalendarController::class, 'update']);
-    Route::post('calendar/updateMain/{id}', [CalendarController::class, 'updateMain']);
+    Route::post('calendar/editMain/{id}', [CalendarController::class, 'updateMain']);
 
     Route::post('calendar/delete/{id}', [CalendarController::class, 'destroy']);
 
     // Events
-    
+
     Route::get('events', [EventController::class, 'index']);
 
     // Arrangements

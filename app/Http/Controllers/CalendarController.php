@@ -19,11 +19,6 @@ class CalendarController extends Controller
         return $calendars;
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $data = request()->validate([
@@ -58,11 +53,6 @@ class CalendarController extends Controller
         }
 
         return $calendar;
-    }
-
-    public function edit(Calendar $calendar)
-    {
-        //
     }
 
     public function update(Request $request, Calendar $calendar)

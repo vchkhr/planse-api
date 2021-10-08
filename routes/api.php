@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ArrangementController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\TestController;
 
 use Illuminate\Http\Request;
@@ -41,23 +42,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('calendar/{id}', [CalendarController::class, 'show']);
 
-    Route::post('calendar/update/{id}', [CalendarController::class, 'update']);
+    Route::post('calendar/edit/{id}', [CalendarController::class, 'update']);
     Route::post('calendar/updateMain/{id}', [CalendarController::class, 'updateMain']);
 
     Route::post('calendar/delete/{id}', [CalendarController::class, 'destroy']);
 
     // Events
     
-    Route::get('user/events', [ArrangementController::class, 'indexUser']);
-    Route::get('user/arrangements', [ArrangementController::class, 'indexUser']);
-
-    Route::get('calendar/{id}/events', [ArrangementController::class, 'index']);
-    Route::get('calendar/{id}/arrangements', [ArrangementController::class, 'index']);
+    Route::get('events', [EventController::class, 'index']);
 
     // Arrangements
 
     Route::post('arrangement/create', [ArrangementController::class, 'store']);
     Route::get('arrangement/{id}', [ArrangementController::class, 'show']);
-    Route::post('arrangement/update/{id}', [ArrangementController::class, 'update']);
+    Route::post('arrangement/edit/{id}', [ArrangementController::class, 'update']);
     Route::post('arrangement/delete/{id}', [ArrangementController::class, 'destroy']);
+
+    Route::get('arrangements', [ArrangementController::class, 'index']);
 });

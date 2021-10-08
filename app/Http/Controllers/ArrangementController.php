@@ -9,42 +9,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArrangementController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         /** @var \App\Models\User */
         $user = Auth::user();
-
-        $calendar = $user->calendars->find($request->id);
-
-        if ($calendar == null) {
-            return response([
-                'message' => 'You can\'t see this calendar.'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $arrangements = $calendar->arrangements;
-
-        return $arrangements;
-    }
-
-    public function date_compare($element1, $element2) {
-        $datetime1 = strtotime($element1['end']);
-        $datetime2 = strtotime($element2['end']);
-        return $datetime1 - $datetime2;
-    } 
-
-    public function all_day($element1, $element2) {
-        return $element2['all_day'] - $element1['all_day'];
-    } 
-
-    public function indexUser()
-    {
-        /** @var \App\Models\User */
-        $user = Auth::user();
-
-        $calendars = $user->calendars;
 
         $arrangements = Array();
+
+        $calendars = $user->calendars;
 
         foreach ($calendars as $calendar) {
             foreach ($calendar->arrangements as $arrangement) {
@@ -58,11 +30,6 @@ class ArrangementController extends Controller
         return $arrangements;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
@@ -126,12 +93,6 @@ class ArrangementController extends Controller
         return $arrangement;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Arrangement  $arrangement
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Arrangement $arrangement)
     {
         //
@@ -189,5 +150,15 @@ class ArrangementController extends Controller
         $arrangement->delete();
 
         return response([], Response::HTTP_OK);
+    }
+
+    public function date_compare($element1, $element2) {
+        $datetime1 = strtotime($element1['end']);
+        $datetime2 = strtotime($element2['end']);
+        return $datetime1 - $datetime2;
+    } 
+
+    public function all_day($element1, $element2) {
+        return $element2['all_day'] - $element1['all_day'];
     }
 }

@@ -4,17 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ArrangementController;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $arrangements = app(ArrangementController::class)->index();
+
+        foreach($arrangements as $arrangement) {
+            $arrangement->type = 'arrangement';
+        }
+
+        $events = $arrangements;
+
+        return $events;
     }
 
     /**

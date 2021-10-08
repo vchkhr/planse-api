@@ -9,6 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CalendarController extends Controller
 {
+    public function index(Calendar $calendar)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendars = $user->calendars()->get();
+
+        return $calendars;
+    }
+
     public function create()
     {
         //
@@ -50,16 +60,6 @@ class CalendarController extends Controller
         return $calendar;
     }
 
-    public function index(Calendar $calendar)
-    {
-        /** @var \App\Models\User */
-        $user = Auth::user();
-
-        $calendars = $user->calendars()->get();
-
-        return $calendars;
-    }
-
     public function edit(Calendar $calendar)
     {
         //
@@ -95,26 +95,6 @@ class CalendarController extends Controller
         return response($calendar);
     }
 
-    public function updateMain(Request $request, Calendar $calendar)
-    {
-        /** @var \App\Models\User */
-        $user = Auth::user();
-
-        $calendar = $user->calendars()->find($request->id);
-
-        if ($calendar == null) {
-            return response([
-                'message' => 'You can\'t make this calendar as main.'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $user->main_calendar = $calendar->id;
-
-        $user->save();
-
-        return response($user);
-    }
-
     public function destroy(Request $request, Calendar $calendar)
     {
         /** @var \App\Models\User */
@@ -137,5 +117,25 @@ class CalendarController extends Controller
         $calendar->delete();
 
         return response([], Response::HTTP_OK);
+    }
+
+    public function updateMain(Request $request, Calendar $calendar)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $calendar = $user->calendars()->find($request->id);
+
+        if ($calendar == null) {
+            return response([
+                'message' => 'You can\'t make this calendar as main.'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user->main_calendar = $calendar->id;
+
+        $user->save();
+
+        return response($user);
     }
 }

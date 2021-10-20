@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reminder;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class ReminderController extends Controller
+class TaskController extends Controller
 {
     public function index()
     {
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $reminders = array();
+        $tasks = array();
 
         $calendars = $user->calendars;
 
         foreach ($calendars as $calendar) {
-            if ($calendar->reminders != null) {
-                foreach ($calendar->reminders as $reminder) {
-                    array_push($reminders, $reminder);
+            if ($calendar->tasks != null) {
+                foreach ($calendar->tasks as $task) {
+                    array_push($tasks, $task);
                 }
             }
         }
 
-        usort($reminders, array($this, 'date_compare'));
-        usort($reminders, array($this, 'all_day'));
+        usort($tasks, array($this, 'date_compare'));
+        usort($tasks, array($this, 'is_done'));
 
-        return $reminders;
+        return $tasks;
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class ReminderController extends Controller
         $data = request()->validate([
             'calendar_id' => ['required', 'integer'],
             'start' => ['required', 'date_format:Y-m-d H:i:s'],
-            'all_day' => ['nullable', 'boolean'],
+            'is_done' => ['nullable', 'boolean'],
             'color' => ['nullable', 'integer'],
             'name' => ['required', 'max:100'],
             'description' => ['nullable', 'max:200'],
@@ -50,44 +50,44 @@ class ReminderController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can not add reminders to this calendar.'
+                'message' => 'You can not add tasks to this calendar.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $reminder = $calendar->reminders()->create([
+        $task = $calendar->tasks()->create([
             'user_id' => $user->id,
             'start' => $data['start'],
-            'all_day' => $data['all_day'] ?? false,
+            'is_done' => $data['is_done'] ?? false,
             'color' => $data['color'] ?? 0,
             'name' => $data['name'],
             'description' => $data['description'] ?? null,
         ]);
 
-        return response($reminder);
+        return response($task);
     }
 
-    public function show(Request $request, reminder $reminder)
+    public function show(Request $request, task $task)
     {
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $reminder = $user->reminders()->find($request->id);
+        $task = $user->tasks()->find($request->id);
 
-        if ($reminder == null) {
+        if ($task == null) {
             return response([
-                'message' => 'You can not see this reminder.'
+                'message' => 'You can not see this task.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $reminder;
+        return $task;
     }
 
-    public function update(Request $request, reminder $reminder)
+    public function update(Request $request, task $task)
     {
         $data = request()->validate([
             'calendar_id' => ['nullable', 'integer'],
             'start' => ['nullable', 'date_format:Y-m-d H:i:s'],
-            'all_day' => ['nullable', 'boolean'],
+            'is_done' => ['nullable', 'boolean'],
             'color' => ['nullable', 'integer'],
             'name' => ['nullable', 'max:100'],
             'description' => ['nullable', 'max:200'],
@@ -96,40 +96,40 @@ class ReminderController extends Controller
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $reminder = $user->reminders()->find($request->id);
+        $task = $user->tasks()->find($request->id);
 
-        if ($reminder == null) {
+        if ($task == null) {
             return response([
-                'message' => 'You can not edit this reminder.'
+                'message' => 'You can not edit this task.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $reminder->update([
-            'calendar_id' => $data['calendar_id'] ?? $reminder['calendar_id'],
-            'start' => $data['start'] ?? $reminder['start'],
-            'all_day' => $data['all_day'] ?? $reminder['all_day'],
-            'color' => $data['color'] ?? $reminder['color'],
-            'name' => $data['name'] ?? $reminder['name'],
-            'description' => $data['description'] ?? $reminder['description'],
+        $task->update([
+            'calendar_id' => $data['calendar_id'] ?? $task['calendar_id'],
+            'start' => $data['start'] ?? $task['start'],
+            'is_done' => $data['is_done'] ?? $task['is_done'],
+            'color' => $data['color'] ?? $task['color'],
+            'name' => $data['name'] ?? $task['name'],
+            'description' => $data['description'] ?? $task['description'],
         ]);
 
-        return response($reminder);
+        return response($task);
     }
 
-    public function destroy(Request $request, reminder $reminder)
+    public function destroy(Request $request, task $task)
     {
         /** @var \App\Models\User */
         $user = Auth::user();
 
-        $reminder = $user->reminders()->find($request->id);
+        $task = $user->tasks()->find($request->id);
 
-        if ($reminder == null) {
+        if ($task == null) {
             return response([
-                'message' => 'You can not delete this reminder.'
+                'message' => 'You can not delete this task.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $reminder->delete();
+        $task->delete();
 
         return response([], Response::HTTP_OK);
     }
@@ -141,8 +141,8 @@ class ReminderController extends Controller
         return $datetime1 - $datetime2;
     }
 
-    public function all_day($element1, $element2)
+    public function is_done($element1, $element2)
     {
-        return $element2['all_day'] - $element1['all_day'];
+        return $element1['is_done'] - $element2['is_done'];
     }
 }

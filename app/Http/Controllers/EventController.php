@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ArrangementController;
+use App\Http\Controllers\ReminderController;
 
 class EventController extends Controller
 {
@@ -25,6 +26,14 @@ class EventController extends Controller
             foreach ($reminders as $reminder) {
                 $reminder->type = 'reminder';
                 array_push($events, $reminder);
+            }
+        }
+
+        $tasks = app(TaskController::class)->index();
+        if ($tasks != null) {
+            foreach ($tasks as $task) {
+                $task->type = 'task';
+                array_push($events, $task);
             }
         }
 

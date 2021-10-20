@@ -48,7 +48,7 @@ class CalendarController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can\'t see this calendar.'
+                'message' => 'You can not see this calendar.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -71,7 +71,7 @@ class CalendarController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can\'t edit this calendar.'
+                'message' => 'You can not edit this calendar.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -94,13 +94,13 @@ class CalendarController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can\'t delete this calendar.'
+                'message' => 'You can not delete this calendar.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
         if ($calendar->id == $user->main_calendar) {
             return response([
-                'message' => 'You can\'t delete your main calendar.'
+                'message' => 'You can not delete your main calendar.'
             ], Response::HTTP_FORBIDDEN);
         }
 
@@ -118,7 +118,7 @@ class CalendarController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can\'t make this calendar as main.'
+                'message' => 'You can not make this calendar as main.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 

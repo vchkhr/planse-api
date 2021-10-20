@@ -5,6 +5,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArrangementController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestController;
 
 use Illuminate\Http\Request;
@@ -67,4 +68,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('reminder/edit/{id}', [ReminderController::class, 'update']);
     Route::post('reminder/delete/{id}', [ReminderController::class, 'destroy']);
     Route::get('reminders', [ReminderController::class, 'index']);
+
+    // Tasks
+
+    Route::post('task/create', [TaskController::class, 'store']);
+    Route::get('task/{id}', [TaskController::class, 'show']);
+    Route::post('task/edit/{id}', [TaskController::class, 'update']);
+    Route::post('task/delete/{id}', [TaskController::class, 'destroy']);
+    Route::get('tasks', [TaskController::class, 'index']);
 });

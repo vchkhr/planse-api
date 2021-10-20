@@ -51,7 +51,7 @@ class ArrangementController extends Controller
 
         if ($calendar == null) {
             return response([
-                'message' => 'You can\'t add to this calendar.'
+                'message' => 'You can not add arrangements to this calendar.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -83,7 +83,7 @@ class ArrangementController extends Controller
 
         if ($arrangement == null) {
             return response([
-                'message' => 'You can\'t see this arrangement.'
+                'message' => 'You can not see this arrangement.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -109,7 +109,7 @@ class ArrangementController extends Controller
 
         if ($arrangement == null) {
             return response([
-                'message' => 'You can\'t edit this arrangement.'
+                'message' => 'You can not edit this arrangement.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -135,7 +135,7 @@ class ArrangementController extends Controller
 
         if ($arrangement == null) {
             return response([
-                'message' => 'You can\'t delete this arrangement.'
+                'message' => 'You can not delete this arrangement.'
             ], Response::HTTP_UNAUTHORIZED);
         }
 

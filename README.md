@@ -1,4 +1,4 @@
-# [Planse API(http://planse.vchkhr.com/)
+# [Planse API](http://planse.vchkhr.com/)
 API for online calendar application.
 
 ## Features

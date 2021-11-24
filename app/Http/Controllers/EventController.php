@@ -13,11 +13,11 @@ class EventController extends Controller
     {
         $events = array();
 
-        $arrangements = app(ArrangementController::class)->index();
-        if ($arrangements != null) {
-            foreach ($arrangements as $arrangement) {
-                $arrangement->type = 'arrangement';
-                array_push($events, $arrangement);
+        $tasks = app(TaskController::class)->index();
+        if ($tasks != null) {
+            foreach ($tasks as $task) {
+                $task->type = 'task';
+                array_push($events, $task);
             }
         }
 
@@ -29,11 +29,11 @@ class EventController extends Controller
             }
         }
 
-        $tasks = app(TaskController::class)->index();
-        if ($tasks != null) {
-            foreach ($tasks as $task) {
-                $task->type = 'task';
-                array_push($events, $task);
+        $arrangements = app(ArrangementController::class)->index();
+        if ($arrangements != null) {
+            foreach ($arrangements as $arrangement) {
+                $arrangement->type = 'arrangement';
+                array_push($events, $arrangement);
             }
         }
 
